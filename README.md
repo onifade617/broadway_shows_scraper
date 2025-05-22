@@ -14,8 +14,50 @@ This Python script scrapes current Broadway production show listings from [IBDB.
 The extracted data is saved into a CSV file named `ibdb_shows.csv`.
 
 ---
+## Project Structure
 
-## 🛠️ Requirements
+- `show_time.py`: Main scraping script that extracts show details from IBDB.
+- `scheduler.py`: Runs the scraping script every 24 hours using the `schedule` library.
+- `requirements.txt`: Lists all the required Python packages.
+- `ibdb_shows.csv`: Output CSV file with the scraped show data.
+
+---
+
+## How `show_time.py` Works
+
+This script uses **Selenium** and **BeautifulSoup** to scrape information from the IBDB website.
+
+### Key Steps:
+
+1. **Set Up Selenium WebDriver**: Initializes a Chrome browser instance.
+2. **Load Show Listings Page**: Navigates to the IBDB shows page.
+3. **Parse HTML Content**: Uses BeautifulSoup to parse dynamically loaded content.
+4. **Extract Show Links**: Gathers URLs of individual show pages.
+5. **Scrape Individual Show Data**:
+   - Show Title
+   - Image Link
+   - Show Type
+   - Performance Info
+   - Venue Name
+   - Show Date
+6. **Save Data**: Outputs all collected data into a CSV file called `ibdb_shows.csv`.
+
+---
+
+## How `scheduler.py` Works
+
+This script uses the **schedule** library to automate the running of the scraper.
+
+### Key Steps:
+
+1. Imports required libraries (`schedule`, `time`, `datetime`, and `subprocess`).
+2. Defines a function `run_scraper()` to call `show_time.py`.
+3. Schedules the function to run every 24 hours.
+4. Enters an infinite loop to keep checking and running pending tasks.
+
+---
+
+## Requirements
 
 ### Python Version
 - Python 3.7 or newer
@@ -26,24 +68,21 @@ The extracted data is saved into a CSV file named `ibdb_shows.csv`.
 - `pandas`
 - `requests`
 - `re` 
+- `schedule`
 
 ---
 
-## 🔧 Setup Instructions
+## Setup Instructions
 
 ### 1. Clone or Download This Repository
 
 ```bash
-git clone https://github.com/onifade617
-cd broadway_shows_scraper
+git clone https://github.com/onifade617/broadway_shows_scraper.git
+
+
 ```
 
-### 2. Create a Virtual Environment (Optional)
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
 ### 3. Install Dependencies
 
@@ -55,35 +94,56 @@ pip install -r requirements.txt
 
 
 
+
+
 ---
 
 ## 🚀 Usage
 
-To run the scraper:
+## Running the Scripts
+
+### Run Scraper Manually
 
 ```bash
 python show_time.py
 ```
+This script uses **Selenium** and **BeautifulSoup** to scrape information from the IBDB website.
 
-The script will:
-- Launch a Chrome browser using Selenium
-- Navigate to the IBDB Shows page
-- Scrape relevant data from each show detail page
-- Save the collected information into `ibdb_shows.csv`
+### Key Steps:
+
+1. **Set Up Selenium WebDriver**: Initializes a Chrome browser instance.
+2. **Load Show Listings Page**: Navigates to the IBDB shows page.
+3. **Parse HTML Content**: Uses BeautifulSoup to parse dynamically loaded content.
+4. **Extract Show Links**: Gathers URLs of individual show pages.
+5. **Scrape Individual Show Data**:
+   - Show Title
+   - Image Link
+   - Show Type
+   - Performance Info
+   - Venue Name
+   - Show Date
+6. **Save Data**: Outputs all collected data into a CSV file called `ibdb_shows.csv`.
+
+---
+### Run the Scheduler
+
+```bash
+python scheduler.py
+```
+## How `scheduler.py` Works
+
+This script uses the **schedule** library to automate the running of the scraper.
+
+### Key Steps:
+
+1. Imports required libraries (`schedule`, `time`, `datetime`, and `subprocess`).
+2. Defines a function `run_scraper()` to call `show_time.py`.
+3. Schedules the function to run every 24 hours.
+4. Enters an infinite loop to keep checking and running pending tasks.
 
 
 
 ## ⚠️ Notes
 
-- The scraper uses `time.sleep()` to wait for pages to load. You can replace this with `WebDriverWait` for better control.
-- Scraping large websites may violate terms of service. Use responsibly.
-- If the website layout changes, class names and logic may need updating.
-
----
-
-## 📬 Contact
-
-Feel free to contribute or report issues on GitHub.
-
----
-
+- Make sure you have Google Chrome installed and the corresponding [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/) available in your PATH.
+- JavaScript content is dynamically loaded, hence the need for Selenium.
