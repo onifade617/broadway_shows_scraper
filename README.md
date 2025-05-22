@@ -34,8 +34,8 @@ The extracted data is saved into a CSV file named `ibdb_shows.csv`.
 ### 1. Clone or Download This Repository
 
 ```bash
-git clone https://github.com/onifade617/broadway_shows_scraper
-cd ibdb-scraper
+git clone https://github.com/onifade617
+cd broadway_shows_scraper
 ```
 
 ### 2. Create a Virtual Environment (Optional)
@@ -51,21 +51,9 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-If you don't have a `requirements.txt` yet, create one with:
 
-```bash
-pip install selenium beautifulsoup4 pandas requests lxml
-pip freeze > requirements.txt
-```
 
-### 4. Install ChromeDriver
 
-- Download from: https://sites.google.com/chromium.org/driver/
-- Place it in your system PATH or specify the path explicitly in the script:
-
-```python
-driver = webdriver.Chrome(executable_path='/path/to/chromedriver')
-```
 
 ---
 
@@ -74,7 +62,7 @@ driver = webdriver.Chrome(executable_path='/path/to/chromedriver')
 To run the scraper:
 
 ```bash
-python ibdb_scraper.py
+python show_time.py
 ```
 
 The script will:
@@ -83,17 +71,7 @@ The script will:
 - Scrape relevant data from each show detail page
 - Save the collected information into `ibdb_shows.csv`
 
----
 
-## 📄 Output Format
-
-A sample of the CSV output:
-
-| Title     | Date     | Image Link | Theatre Name | Performance | Show Type | Detail_Link |
-|-----------|----------|------------|---------------|-------------|-----------|-------------|
-| Wicked    | Jun 15, 2025 | https://...jpg | Gershwin Theatre | Musical Performance | Musical | https://www.ibdb.com/... |
-
----
 
 ## ⚠️ Notes
 
