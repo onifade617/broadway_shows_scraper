@@ -5,6 +5,7 @@ import time
 import re
 import requests
 import pandas as pd
+from datetime import datetime
 
 # === Set up the Chrome WebDriver ===
 driver = webdriver.Chrome()
@@ -29,6 +30,14 @@ heading = soup.find("div", class_="page-wrapper xtrr")\
     .find("div", id="current")\
     .find("div", class_="row show-images xt-iblocks")\
     .find_all("div", class_="xt-iblock")
+
+# Load existing data for deduplication
+try:
+    existing_df = pd.read_csv("ibdb_shows.csv")
+    existing_records = set(zip(existing_df["Title"], existing_df["Date"]))
+except FileNotFoundError:
+    existing_df = pd.DataFrame()
+    existing_records = set()
 
 # === Loop through each show card to extract individual show links ===
 for link in heading:
@@ -125,6 +134,11 @@ for link in heading:
         venue = row_blocks[1].find("a").text.strip()
         date = row_blocks[1].find("i").text.strip()
 
+        # Deduplication based on (title, date)
+        if (title, date) in existing_records:
+            print(f"Skipping duplicate: {title} - {date}")
+            continue
+
         # === Store all extracted data in a dictionary ===
         data.append({
             "Title": title,
@@ -133,19 +147,27 @@ for link in heading:
             "Theatre Name": venue,
             "Performance": third_instance,
             "Show Type": show_type,
-            "Detail_Link": full_url
+            "Detail_Link": full_url,
+            "Scraped_At": datetime.now().isoformat()
         })
+
+        print(f"Scraped: {title} - {date}")
 
         print(data)  # (Optional) print each extracted data entry
 
-# === Convert data to DataFrame and save to CSV ===
-df = pd.DataFrame(data)
-df.to_csv("ibdb_shows.csv", index=False)
-print("Scraping completed and data saved to 'ibdb_shows.csv'.")
+
 
 # === Clean up: Close the browser ===
 driver.quit()
-
+# Save new data
+if data:
+    new_df = pd.DataFrame(data)
+    combined_df = pd.concat([existing_df, new_df], ignore_index=True)
+    combined_df.drop_duplicates(subset=["Title", "Date"], inplace=True)
+    combined_df.to_csv("ibdb_shows.csv", index=False)
+    print(f"[{datetime.now()}] Scrape completed and data saved.")
+else:
+    print(f"[{datetime.now()}] No new data found.")
 
 
 
