@@ -138,7 +138,7 @@ This script uses the **schedule** library to automate the running of the scraper
 
 1. Imports required libraries (`schedule`, `time`, `datetime`, and `subprocess`).
 2. Defines a function `run_scraper()` to call `show_time.py`.
-3. Schedules the function to run every 24 hours.
+3. Schedules the function to run once in every 24 hours.
 4. Enters an infinite loop to keep checking and running pending tasks.
 
 
