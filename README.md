@@ -122,6 +122,7 @@ This script uses **Selenium** and **BeautifulSoup** to scrape information from t
    - Performance Info
    - Venue Name
    - Show Date
+   - Scraped Time
 6. **Save Data**: Outputs all collected data into a CSV file called `ibdb_shows.csv`.
 
 ---
